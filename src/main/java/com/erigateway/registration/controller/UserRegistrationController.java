@@ -22,9 +22,9 @@ public class UserRegistrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userCreditionalDto));
     }
 
-//    @PutMapping("/updatedUser")
-//    public ResponseEntity<User> updatedUserProfile(@RequestBody UserProfileDto userProfileDto, @RequestParam("email") String email)
-//    {
-//        return ResponseEntity.status(HttpStatus.CREATED).body(userService.registeredUser(userProfileDto, email ));
-//    }
+    @PutMapping("/updatedUserProfile")
+    public ResponseEntity<User> updatedUserProfile(@RequestBody UserProfileDto userProfileDto)
+    {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.updatedUserProfile(userProfileDto));
+    }
 }

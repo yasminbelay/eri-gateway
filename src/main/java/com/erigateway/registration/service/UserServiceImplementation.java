@@ -24,22 +24,26 @@ public class UserServiceImplementation  implements UserService{
         userCreditionalDto.setFirstName(userCreditionalDto.getFirstName());
         userCreditionalDto.setLastName(userCreditionalDto.getLastName());
         userCreditionalDto.setPassword(userCreditionalDto.getPassword());
-        System.out.println(userCreditionalDto.toString());
+//        System.out.println(userCreditionalDto.toString());
         return userRepository.save(modelMapper.map(userCreditionalDto, User.class));
     }
 
-//    @Override
-//    public User registeredUser(UserProfileDto userProfileDto, String email ) {
-////        ensureEmailIsUnique(userProfileDto.getEmail());
-//        userProfileDto.setFirstName(userProfileDto.getFirstName());
-//        userProfileDto.setLastName(userProfileDto.getLastName());
-//        userProfileDto.setDob(userProfileDto.getDob());
-//        userProfileDto.setGender(userProfileDto.getGender());
-//        userProfileDto.setCountry(userProfileDto.getCountry());
-//        userProfileDto.setAddress(userProfileDto.getAddress());
-//        userProfileDto.setPhoneNumber(userProfileDto.getPhoneNumber());
+    @Override
+    public User updatedUserProfile(UserProfileDto userProfileDto) {
+//        ensureEmailIsUnique(userProfileDto.getEmail());
+        User userInDB = userRepository.findUserByEmail(userProfileDto.getEmail()).get();
+
+        userInDB.setFirstName(userProfileDto.getFirstName());
+        userInDB.setLastName(userProfileDto.getLastName());
+        userInDB.setUsername(userProfileDto.getUsername());
+        userInDB.setDob(userProfileDto.getDob());
+        userInDB.setGender(userProfileDto.getGender());
+        userInDB.setCountry(userProfileDto.getCountry());
+        userInDB.setAddress(userProfileDto.getAddress());
+        userInDB.setPhoneNumber(userProfileDto.getPhoneNumber());
 //        return userRepository.save(modelMapper.map(userProfileDto, User.class));
-//    }
+        return userRepository.save(userInDB);
+    }
 
     public void ensureEmailIsUnique(String email) {
         if(this.isEmailExist(email)) throw new ResourceNotFound("Email already used!");

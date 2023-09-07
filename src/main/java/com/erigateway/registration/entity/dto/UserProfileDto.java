@@ -7,7 +7,9 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -23,8 +25,9 @@ public class UserProfileDto {
 
     private String lastName;
 
+
     @Column(name = "Date_of_Birth")
-    private String  dob;
+    private String dob;
     private String gender;
 
     private String country;
