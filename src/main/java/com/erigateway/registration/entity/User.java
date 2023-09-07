@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,6 +23,7 @@ public class User {
     private String firstName;
     private String lastName;
 
+
     @Column(name = "Date_of_Birth")
     private String dob;
     private String gender;
@@ -30,6 +33,4 @@ public class User {
     private Long phoneNumber;
     private String email;
     private String password;
-
-
 }
