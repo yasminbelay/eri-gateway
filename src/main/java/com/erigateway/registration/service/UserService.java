@@ -1,9 +1,7 @@
 package com.erigateway.registration.service;
 
 import com.erigateway.registration.entity.User;
-import com.erigateway.registration.entity.dto.UserCreditionalDto;
-import com.erigateway.registration.entity.dto.UserPasswordDto;
-import com.erigateway.registration.entity.dto.UserProfileDto;
+import com.erigateway.registration.entity.dto.*;
 
 public interface UserService {
 
@@ -13,5 +11,7 @@ public interface UserService {
     void changePassword(UserPasswordDto userPasswordDto);
 
     boolean isEmailExist (String email);
+
+    LoginResponse login(UserLoginDto userLoginDto);
 
 }
