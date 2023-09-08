@@ -2,6 +2,7 @@ package com.erigateway.registration.service;
 
 import com.erigateway.registration.entity.User;
 import com.erigateway.registration.entity.dto.UserCreditionalDto;
+import com.erigateway.registration.entity.dto.UserPasswordDto;
 import com.erigateway.registration.entity.dto.UserProfileDto;
 import com.erigateway.registration.exception.ResourceNotFound;
 import com.erigateway.registration.repository.UserRepository;
@@ -41,8 +42,26 @@ public class UserServiceImplementation  implements UserService{
         userInDB.setCountry(userProfileDto.getCountry());
         userInDB.setAddress(userProfileDto.getAddress());
         userInDB.setPhoneNumber(userProfileDto.getPhoneNumber());
+
+
 //        return userRepository.save(modelMapper.map(userProfileDto, User.class));
         return userRepository.save(userInDB);
+    }
+
+    @Override
+    public void changePassword(UserPasswordDto userPasswordDto) {
+        User userPasswordInDB = userRepository.findUserByEmail(userPasswordDto.getEmail()).get();
+
+        if(!userPasswordDto.getOldPassword().equals(userPasswordInDB.getPassword()))
+        {
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+        if (!userPasswordDto.getNewPassword().equals(userPasswordDto.getConfirmNewPassword())) {
+            throw new IllegalArgumentException("New password and confirm password do not match");
+        }
+
+        userPasswordInDB.setPassword(userPasswordDto.getNewPassword());
+        userRepository.save(userPasswordInDB);
     }
 
     public void ensureEmailIsUnique(String email) {

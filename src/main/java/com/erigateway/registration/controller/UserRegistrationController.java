@@ -2,6 +2,7 @@ package com.erigateway.registration.controller;
 
 import com.erigateway.registration.entity.User;
 import com.erigateway.registration.entity.dto.UserCreditionalDto;
+import com.erigateway.registration.entity.dto.UserPasswordDto;
 import com.erigateway.registration.entity.dto.UserProfileDto;
 import com.erigateway.registration.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,11 @@ public class UserRegistrationController {
     public ResponseEntity<User> updatedUserProfile(@RequestBody UserProfileDto userProfileDto)
     {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.updatedUserProfile(userProfileDto));
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody UserPasswordDto userPasswordDto) {
+        userService.changePassword(userPasswordDto);
+        return ResponseEntity.ok("Password changed successfully.");
     }
 }
