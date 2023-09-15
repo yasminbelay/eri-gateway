@@ -14,4 +14,6 @@ public interface UserService {
 
     LoginResponse login(UserLoginDto userLoginDto);
 
+    public void resetPassword(PasswordResetDTO passwordResetDTO) throws Exception;
+
 }
