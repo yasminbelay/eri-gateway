@@ -14,4 +14,6 @@ public interface UserService {
 
     LoginResponse login(UserLoginDto userLoginDto);
 
+    LogOutResponse logOut();
+
 }
