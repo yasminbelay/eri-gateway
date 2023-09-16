@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -51,7 +53,7 @@ public class UserServiceImplementation  implements UserService{
     @Override
     public User updatedUserProfile(UserProfileDto userProfileDto) {
 //        ensureEmailIsUnique(userProfileDto.getEmail());
-        User userInDB = userRepository.findUserByEmail(userProfileDto.getEmail()).get();
+        User userInDB = userRepository.findUserByEmail(userProfileDto.getEmail());
 
         userInDB.setFirstName(userProfileDto.getFirstName());
         userInDB.setLastName(userProfileDto.getLastName());
@@ -69,7 +71,7 @@ public class UserServiceImplementation  implements UserService{
 
     @Override
     public void changePassword(UserPasswordDto userPasswordDto) {
-        User userPasswordInDB = userRepository.findUserByEmail(userPasswordDto.getEmail()).get();
+        User userPasswordInDB = userRepository.findUserByEmail(userPasswordDto.getEmail());
 
         if(!userPasswordDto.getOldPassword().equals(userPasswordInDB.getPassword()))
         {
@@ -86,7 +88,7 @@ public class UserServiceImplementation  implements UserService{
 
     @Override
     public boolean isEmailExist(String email) {
-        User user = userRepository.findUserByEmail(email).orElse(null);
+        User user = userRepository.findUserByEmail(email);
         return user != null;
     }
 
@@ -99,8 +101,8 @@ public class UserServiceImplementation  implements UserService{
         LOG.info("Attempting login for user with email: {}", email);
 
         try {
-            User userInDB = userRepository.findUserByEmail(email)
-                    .orElseThrow(() -> new ResourceNotFound("User not found"));
+            User userInDB = userRepository.findUserByEmail(email);
+//                    .orElseThrow(() -> new ResourceNotFound("User not found"));
 
             LOG.info("User found with email: {}", email);
 
@@ -120,6 +122,55 @@ public class UserServiceImplementation  implements UserService{
         }
     }
 
+//    public LoginResponse resetPassword(PasswordReset passwordReset) throws Exception {
+//
+//        String email  = passwordReset.getEmail()  ;
+//
+//        String password = passwordReset.getPassword() ;
+//
+//        Optional<User> userInDB = userRepository.findUserByEmail(email)  ;
+//
+//        if (userInDB.isPresent()){
+//            User user  = userInDB.get() ;
+//            System.out.println(user);
+//
+//            user.setEmail(passwordReset.getEmail());
+//
+//            user.setPassword(passwordReset.getPassword());
+//
+//            return new LoginResponse("Success") ;
+//        }
+//
+//        else {
+//            throw  new Exception("User doesnt exists") ;
+//        }
+//    }
+
+    public void resetPassword(PasswordResetDTO passwordResetDTO) throws Exception {
+
+        String email = passwordResetDTO.getEmail();
+        String newPassword = passwordResetDTO.getPassword();
+        String phoneNumber = passwordResetDTO.getPhoneNumber();
+        LOG.info("Attempting to reset password  for user with email: {}", email);
+        LOG.info("Attempting to reset for user with phone Number : {}", phoneNumber);
+
+
+        User userByEmail = userRepository.findUserByEmail(email);
+        User userByPhoneNumber = userRepository.findByPhoneNumber(phoneNumber);
+
+
+        if (userByEmail != null && userByPhoneNumber != null) {
+            LOG.info("User: {}", userByEmail);
+
+            // Update the user's password with the new password
+            userByEmail.setPassword(newPassword);
+            userRepository.save(userByEmail);
+            LOG.info("Log in successful for user {}" , userByEmail.getEmail());
+        } else {
+            throw new Exception("User doesn't exist");
+
+        }
+    }
 
 
 }

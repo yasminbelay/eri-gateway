@@ -37,10 +37,23 @@ public class UserRegistrationController {
         return ResponseEntity.ok("Password changed successfully.");
     }
 
+
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public String getUserByEmail() {
       return  "Hello World" ;
     }
+
+    @PostMapping("/reset")
+    public ResponseEntity<String> resetPassword(@RequestBody PasswordResetDTO passwordResetDTO) {
+        try {
+            userService.resetPassword(passwordResetDTO);
+            return ResponseEntity.ok("Password reset successful.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
 }

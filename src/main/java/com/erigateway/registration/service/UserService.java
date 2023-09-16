@@ -13,7 +13,7 @@ public interface UserService {
     boolean isEmailExist (String email);
 
     LoginResponse login(UserLoginDto userLoginDto);
-
+    public void resetPassword(PasswordResetDTO passwordResetDTO) throws Exception;
     LogOutResponse logOut();
 
 }
